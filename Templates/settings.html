@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}الميزانية والإعدادات{% endblock %}
+{% block content %}
+<h4 class="mb-4"><i class="bi bi-gear me-2"></i>الميزانية والإعدادات</h4>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h6 class="mb-3">إعدادات المكتب</h6>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">اسم المكتب</label>
+                    <input type="text" name="office_name" class="form-control" value="{{ office_name }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">الميزانية السنوية المحددة</label>
+                    <input type="number" step="1" name="budget_total" class="form-control" value="{{ budget_total }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">سنة الميزانية</label>
+                    <input type="text" name="budget_year" class="form-control" value="{{ budget_year }}">
+                </div>
+                <button type="submit" class="btn btn-primary">حفظ</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h6 class="mb-3">حالة الميزانية الحالية</h6>
+            <div class="progress mb-3" style="height:24px">
+                <div class="progress-bar {% if budget.percent_used > 90 %}bg-danger{% elif budget.percent_used > 70 %}bg-warning{% else %}bg-success{% endif %}"
+                     style="width:{{ budget.percent_used }}%">{{ budget.percent_used }}%</div>
+            </div>
+            <table class="table table-sm">
+                <tr><td>الميزانية المخصصة</td><td class="fw-bold">{{ "{:,.0f}".format(budget.total) }}</td></tr>
+                <tr><td>مصروف المنح</td><td class="text-warning">{{ "{:,.0f}".format(budget.spent_aides) }}</td></tr>
+                <tr><td>مصروف القروض النشطة</td><td class="text-info">{{ "{:,.0f}".format(budget.spent_credits) }}</td></tr>
+                <tr><td>إجمالي المصروف</td><td class="text-danger fw-bold">{{ "{:,.0f}".format(budget.total_spent) }}</td></tr>
+                <tr><td>المتبقي</td><td class="text-success fw-bold">{{ "{:,.0f}".format(budget.remaining) }}</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
